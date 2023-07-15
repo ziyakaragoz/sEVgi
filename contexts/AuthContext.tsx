@@ -5,16 +5,16 @@ export type AuthContextType = {
   signIn: () => void;
   signOut: () => void;
   user: User | null;
-} | null
+}
 
-const AuthContext = React.createContext<AuthContextType>(null);
+const initAuthValues = { signIn: Function, signOut: Function, user: null}
+
+const AuthContext = React.createContext<AuthContextType>(initAuthValues);
 
 // This hook can be used to access the user info.
 export function useAuth(): AuthContextType {
   return React.useContext(AuthContext);
 }
-
-
 
 export type User = {
   firstName: string;
@@ -28,17 +28,12 @@ function useProtectedRoute(user: User) {
   const router = useRouter();
   React.useEffect(() => {
     const inAuthGroup = segments[0] === '(auth)';
-
-    if (
-      // If the user is not signed in and the initial segment is not anything in the auth group.
-      !user &&
-      !inAuthGroup
-    ) {
-      // Redirect to the sign-in page.
-      router.replace('/sign-in');
-    } else if (user && inAuthGroup) {
-      // Redirect away from the sign-in page.
+    if ( !user && !inAuthGroup) {
+      console.warn({user, inAuthGroup})
       router.replace('/');
+    } else if (user && inAuthGroup) {
+    console.warn("ELS IFE GIRDI")
+      router.replace('(tabs)/two');
     }
   }, [user, segments]);
 }

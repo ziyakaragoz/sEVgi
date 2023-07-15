@@ -5,6 +5,7 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
+import { Provider } from '../contexts/AuthContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -13,7 +14,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: '(auth)',
 };
 
 export default function RootLayout() {
@@ -40,15 +41,16 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <>
     <PaperProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <Provider>
         <Stack>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         </Stack>
+  </Provider>
       </ThemeProvider>
       </PaperProvider>
-    </>
   );
 }
