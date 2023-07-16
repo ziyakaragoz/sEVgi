@@ -5,7 +5,7 @@ export default function SignIn() {
   const { signIn } = useAuth();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text onPress={() => signIn()}>Sign In</Text>
+      <Text onPress={() => signIn("email","password")}>Sign In</Text>
     </View>
   );
 }

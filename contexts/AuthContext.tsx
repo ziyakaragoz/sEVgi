@@ -2,7 +2,7 @@ import {  useRouter, useSegments } from 'expo-router';
 import React from 'react';
 
 export type AuthContextType = {
-  signIn: () => void;
+  signIn: (email: string, password: string) => void;
   signOut: () => void;
   user: User | null;
 }
@@ -29,10 +29,8 @@ function useProtectedRoute(user: User) {
   React.useEffect(() => {
     const inAuthGroup = segments[0] === '(auth)';
     if ( !user && !inAuthGroup) {
-      console.warn({user, inAuthGroup})
       router.replace('/');
     } else if (user && inAuthGroup) {
-    console.warn("ELS IFE GIRDI")
       router.replace('(tabs)/two');
     }
   }, [user, segments]);
@@ -43,10 +41,16 @@ export function Provider(props: any) {
 
   useProtectedRoute(user);
 
+  function signInUser(email: string, password: string){
+    // login logic
+
+    setAuth({email: "", firstName:"", lastName: ""})
+  }
+
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => setAuth({email: "", firstName:"", lastName: ""}),
+        signIn: (email: string, password: string) => signInUser(email, password),
         signOut: () => setAuth(null),
         user,
       }}>
